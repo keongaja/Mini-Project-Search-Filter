@@ -69,6 +69,21 @@ class productsViewCell: UICollectionViewCell {
 }
 class ViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 
+    var q = "samsung"
+    var pmax = "100000"
+    var pmin = "1000"
+    var wholesale = true
+    var official = false
+    var fshop = "2"
+    var start = 0
+    var row = 10
+
+    var jsoncache = JSON.null
+    var total_data = 0
+    var loadStatus = false
+
+    var data_produk = [dataProduk]()
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -93,6 +108,12 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     }()
 
     override func viewDidLoad() {
+        let  screenSize = UIScreen.main.bounds
+        if screenSize.width > 500 {
+            row = 16
+        } else {
+            row = 10
+        }
         super.viewDidLoad()
 
         self.extendedLayoutIncludesOpaqueBars = false
@@ -101,24 +122,73 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         title = "Search"
         view.backgroundColor = UIColor(hexString: "#E7E8E9")
 
+
         setup()
     }
 
 
     func loadData() {
+        loadStatus = false
         let parameternya : Parameters = [
-            "q" : "samsung" ,
-            "pmin" : "10000" ,
-            "pmax" : "100000" ,
-            "wholesale" : true ,
-            "official" : false ,
-            "fshop" : "2" ,
-            "start" : "0" ]
-
+            "q" : q ,
+            "pmin" : pmin ,
+            "pmax" : pmax ,
+            "wholesale" : wholesale ,
+            "official" : official ,
+            "fshop" : fshop ,
+            "start" : start ,
+            "rows" : row]
         let linkAPI = "https://ace.tokopedia.com/search/v2.5/product"
         Alamofire.request(linkAPI, parameters: parameternya).responseJSON { response in
-            var json = JSON(response.result.value)
-            print(json)
+             if (response.response?.statusCode == 200) {
+                let json = JSON(response.result.value)
+
+                self.jsoncache = self.getJSON(data: json["header"].description)
+                self.total_data = Int(self.jsoncache["total_data"].doubleValue)
+
+                self.jsoncache = self.getJSON(data: json["data"].description)
+
+                for (_,subJson):(String, JSON) in self.jsoncache {
+
+                    let jsonShop = self.getJSON(data: subJson["shop"].description)
+                    let dataShop = shop(id: jsonShop["id"].description,
+                                        name: jsonShop["name"].description,
+                                        uri: jsonShop["uri"].description,
+                                        is_gold: jsonShop["is_gold"].description,
+                                        rating: jsonShop["rating"].description,
+                                        location: jsonShop["location"].description,
+                                        reputation_image_uri: jsonShop["reputation_image_uri"].description,
+                                        shop_lucky: jsonShop["shop_lucky"].description,
+                                        city: jsonShop["city"].description)
+
+                    let jsonBadges = self.getJSON(data: subJson["badges"].description)
+                    let dataBadges = badges(title: jsonBadges["title"].description,
+                                            uri: jsonBadges["uri"].description)
+
+                    self.data_produk.append(dataProduk(name: subJson["name"].description,
+                                                       uri: subJson["uri"].description,
+                                                       image_uri: subJson["image_uri"].description,
+                                                       image_uri_700: subJson["image_uri_700"].description,
+                                                       price: subJson["price"].description,
+                                                       shop: dataShop,
+                                                       condition: subJson["condition"].description,
+                                                       preorder: subJson["preorder"].description,
+                                                       department_id: subJson["department_id"].description,
+                                                       count_review: subJson["count_review"].description,
+                                                       count_talk: subJson["count_talk"].description,
+                                                       count_sold: subJson["count_sold"].description,
+                                                       badges: dataBadges,
+                                                       original_price: subJson["original_price"].description,
+                                                       discount_expired: subJson["discount_expired"].description,
+                                                       discount_percentage: subJson["discount_percentage"].description,
+                                                       stock: subJson["stock"].description))
+                }
+            }
+            self.loadStatus = true
+            self.start += self.row
+            print (self.start)
+            print (self.data_produk.count)
+            self.collectionView.reloadData()
         }
     }
 
@@ -137,6 +207,9 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     }
 
     @objc func pressed(sender: UIButton!) {
+        start = 0
+        data_produk.removeAll()
+        collectionView.reloadData()
         loadData()
     }
 
@@ -145,9 +218,9 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         var tabel:CGSize
 
         if screenSize.width > 500 {
-            tabel = CGSize(width: (screenSize.width-24)/4, height: 1.5 * (screenSize.width-24)/4)
+            tabel = CGSize(width: (screenSize.width-24)/4, height: 1.75 * (screenSize.width-24)/4)
         } else {
-            tabel = CGSize(width: (screenSize.width-10)/2, height: 1.5 * (screenSize.width-10)/2)
+            tabel = CGSize(width: (screenSize.width-10)/2, height: 1.75 * (screenSize.width-10)/2)
         }
         return tabel
     }
@@ -158,21 +231,33 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return data_produk.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "products", for: indexPath) as! productsViewCell
-
+        Alamofire.request(data_produk[indexPath.row].image_uri).responseImage { response in
+            if (response.result.error == nil)
+            {
+                cell.imageView.image = response.result.value
+            }
+        }
+        cell.produk.text = data_produk[indexPath.row].name
+        cell.harga.text = data_produk[indexPath.row].price
         cell.backgroundColor = .white
         return cell
     }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
     }
 
-
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        if offsetY > contentHeight - scrollView.frame.size.height && start < total_data && loadStatus{
+            loadData()
+        }
+    }
 }
 

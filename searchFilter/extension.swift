@@ -8,7 +8,24 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
+
+extension UIViewController {
+    func getJSON(data: String) -> JSON {
+
+        let data = data
+        let dataFromString = data.data(using: .utf8, allowLossyConversion: false)
+        var jsonData = JSON.null
+        do {
+            jsonData = try JSON(data: dataFromString!)
+        } catch _ {
+            
+            //jsonData = nil
+        }
+        return jsonData
+    }
+}
 extension UIView {
 
     func anchorToTop(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
