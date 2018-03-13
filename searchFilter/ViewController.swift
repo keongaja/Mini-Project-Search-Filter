@@ -23,6 +23,7 @@ class productsViewCell: UICollectionViewCell {
         iv.contentMode = .scaleAspectFit
         iv.backgroundColor = .clear
         iv.image = #imageLiteral(resourceName: "noImage")
+        iv.layer.cornerRadius = 5
         iv.clipsToBounds = true
         return iv
     }()
@@ -31,7 +32,7 @@ class productsViewCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "barang barang barang barang barang barang barang barang"
         label.font = label.font.withSize(15)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -47,7 +48,6 @@ class productsViewCell: UICollectionViewCell {
     }()
 
     func setupViews() {
-
         addSubview(imageView)
         imageView.anchorWithConstantsToTop(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 0, rightConstant: 4)
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1).isActive = true
@@ -67,16 +67,8 @@ class productsViewCell: UICollectionViewCell {
     }
 
 }
-class ViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 
-    var q = "samsung"
-    var pmax = "100000"
-    var pmin = "1000"
-    var wholesale = true
-    var official = false
-    var fshop = "2"
-    var start = 0
-    var row = 10
+class ViewController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 
     var jsoncache = JSON.null
     var total_data = 0
@@ -118,7 +110,6 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
 
         self.extendedLayoutIncludesOpaqueBars = false
         self.edgesForExtendedLayout = []
-
         title = "Search"
         view.backgroundColor = UIColor(hexString: "#E7E8E9")
 
@@ -129,20 +120,25 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
 
     func loadData() {
         loadStatus = false
+        var jumlahGold = 0
+        if gold {
+            jumlahGold = 2
+        }
         let parameternya : Parameters = [
             "q" : q ,
             "pmin" : pmin ,
             "pmax" : pmax ,
             "wholesale" : wholesale ,
             "official" : official ,
-            "fshop" : fshop ,
-            "start" : start ,
+            "fshop" : jumlahGold ,
+            "start" : "\(start)" ,
             "rows" : row]
+        print(parameternya)
         let linkAPI = "https://ace.tokopedia.com/search/v2.5/product"
         Alamofire.request(linkAPI, parameters: parameternya).responseJSON { response in
              if (response.response?.statusCode == 200) {
-                let json = JSON(response.result.value)
-
+                let json = JSON(response.result.value!)
+                //print (json)
                 self.jsoncache = self.getJSON(data: json["header"].description)
                 self.total_data = Int(self.jsoncache["total_data"].doubleValue)
 
@@ -185,10 +181,12 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
                 }
             }
             self.loadStatus = true
-            self.start += self.row
-            print (self.start)
-            print (self.data_produk.count)
-            self.collectionView.reloadData()
+            if self.total_data > 0 {
+                start += row
+                print (self.total_data)
+                print (self.data_produk.count)
+                self.collectionView.reloadData()
+            }
         }
     }
 
@@ -211,6 +209,10 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         data_produk.removeAll()
         collectionView.reloadData()
         loadData()
+
+
+        let popOverVC = UINavigationController(rootViewController: filterViewController())
+        present(popOverVC, animated: true, completion: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
@@ -218,7 +220,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         var tabel:CGSize
 
         if screenSize.width > 500 {
-            tabel = CGSize(width: (screenSize.width-24)/4, height: 1.75 * (screenSize.width-24)/4)
+            tabel = CGSize(width: (screenSize.width-16)/4, height: 1.75 * (screenSize.width-16)/4)
         } else {
             tabel = CGSize(width: (screenSize.width-10)/2, height: 1.75 * (screenSize.width-10)/2)
         }
@@ -255,7 +257,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-        if offsetY > contentHeight - scrollView.frame.size.height && start < total_data && loadStatus{
+        if offsetY > contentHeight - scrollView.frame.size.height && loadStatus{
             loadData()
         }
     }

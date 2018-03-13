@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3359AF99803B62E7E40FB8172E136546"
-               BuildableName = "Pods_searchFilter.framework"
-               BlueprintName = "Pods-searchFilter"
+               BlueprintIdentifier = "F6A77E2753C279F67F70C5C21D6FAE15"
+               BuildableName = "DLRadioButton.framework"
+               BlueprintName = "DLRadioButton"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3359AF99803B62E7E40FB8172E136546"
-            BuildableName = "Pods_searchFilter.framework"
-            BlueprintName = "Pods-searchFilter"
+            BlueprintIdentifier = "F6A77E2753C279F67F70C5C21D6FAE15"
+            BuildableName = "DLRadioButton.framework"
+            BlueprintName = "DLRadioButton"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

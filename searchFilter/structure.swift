@@ -8,6 +8,8 @@
 
 import UIKit
 
+let shopTypeList = ["Gold Merchan","Officiak Store"]
+
 struct shop {
     var id : String
     var name : String

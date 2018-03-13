@@ -11,7 +11,26 @@ import UIKit
 import SwiftyJSON
 
 
+var q = "samsung"
+var pmax = "100000000"
+var pmin = "100"
+var wholesale = true
+var official = false
+var gold = false
+var start = 0
+var row = 10
+
 extension UIViewController {
+    func resetParam(){
+        
+        pmax = "100000000"
+        pmin = "100"
+        wholesale = true
+        official = false
+        gold = false
+        start = 0
+        row = 10
+    }
     func getJSON(data: String) -> JSON {
 
         let data = data
@@ -26,6 +45,7 @@ extension UIViewController {
         return jsonData
     }
 }
+
 extension UIView {
 
     func anchorToTop(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {

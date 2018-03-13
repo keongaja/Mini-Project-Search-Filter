@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2B76EDD52056841300A54345 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDD42056841300A54345 /* extension.swift */; };
 		2B76EDDA2056B17800A54345 /* structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDD92056B17800A54345 /* structure.swift */; };
+		2B76EDDC2057762800A54345 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDDB2057762800A54345 /* RangeSlider.swift */; };
+		2B76EDDE20577CE700A54345 /* filterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDDD20577CE700A54345 /* filterViewController.swift */; };
+		2B76EDE02057989000A54345 /* shopTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDDF2057989000A54345 /* shopTypeViewController.swift */; };
 		2BB010672056651C0065755C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB010662056651C0065755C /* AppDelegate.swift */; };
 		2BB010692056651C0065755C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB010682056651C0065755C /* ViewController.swift */; };
 		2BB0106C2056651C0065755C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BB0106A2056651C0065755C /* Main.storyboard */; };
@@ -21,6 +24,9 @@
 		0308FE8F142D2E79D53D57BD /* Pods-searchFilter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-searchFilter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-searchFilter/Pods-searchFilter.debug.xcconfig"; sourceTree = "<group>"; };
 		2B76EDD42056841300A54345 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2B76EDD92056B17800A54345 /* structure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structure.swift; sourceTree = "<group>"; };
+		2B76EDDB2057762800A54345 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		2B76EDDD20577CE700A54345 /* filterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterViewController.swift; sourceTree = "<group>"; };
+		2B76EDDF2057989000A54345 /* shopTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shopTypeViewController.swift; sourceTree = "<group>"; };
 		2BB010632056651C0065755C /* searchFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = searchFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BB010662056651C0065755C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BB010682056651C0065755C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,12 +73,15 @@
 			children = (
 				2BB010662056651C0065755C /* AppDelegate.swift */,
 				2BB010682056651C0065755C /* ViewController.swift */,
+				2B76EDDD20577CE700A54345 /* filterViewController.swift */,
+				2B76EDDF2057989000A54345 /* shopTypeViewController.swift */,
 				2BB0106A2056651C0065755C /* Main.storyboard */,
 				2BB010702056651C0065755C /* Assets.xcassets */,
 				2BB010722056651C0065755C /* LaunchScreen.storyboard */,
 				2BB010752056651C0065755C /* Info.plist */,
 				2B76EDD42056841300A54345 /* extension.swift */,
 				2B76EDD92056B17800A54345 /* structure.swift */,
+				2B76EDDB2057762800A54345 /* RangeSlider.swift */,
 			);
 			path = searchFilter;
 			sourceTree = "<group>";
@@ -189,6 +198,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-searchFilter/Pods-searchFilter-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/DLRadioButton/DLRadioButton.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
@@ -196,6 +206,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DLRadioButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
@@ -230,6 +241,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BB010692056651C0065755C /* ViewController.swift in Sources */,
+				2B76EDDC2057762800A54345 /* RangeSlider.swift in Sources */,
+				2B76EDE02057989000A54345 /* shopTypeViewController.swift in Sources */,
+				2B76EDDE20577CE700A54345 /* filterViewController.swift in Sources */,
 				2BB010672056651C0065755C /* AppDelegate.swift in Sources */,
 				2B76EDD52056841300A54345 /* extension.swift in Sources */,
 				2B76EDDA2056B17800A54345 /* structure.swift in Sources */,
