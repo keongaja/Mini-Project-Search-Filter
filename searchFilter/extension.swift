@@ -11,23 +11,73 @@ import UIKit
 import SwiftyJSON
 
 
-var q = "samsung"
-var pmax = "100000000"
-var pmin = "100"
+var q = ""
+var pmax = 100000000
+var pmin = 100
+var pmaxPrice = 100000000 //jika ada return api max price di query
+var pminPrice = 100 //jika ada return api min price di query
 var wholesale = true
-var official = false
-var gold = false
+//var official = true
+//var gold = true
 var start = 0
 var row = 10
 
+var needReloadData = false
+
+extension String {
+
+    // formatting text for currency textField
+    func currencyInputFormatting() -> String {
+
+        var number: NSNumber!
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currencyAccounting
+        formatter.locale = Locale(identifier: "id_ID")
+        formatter.maximumFractionDigits = 0
+        formatter.minimumFractionDigits = 0
+
+        var amountWithPrefix = self
+
+        // remove from String: "$", ".", ","
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+        amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.characters.count), withTemplate: "")
+
+        let double = (amountWithPrefix as NSString).doubleValue
+        number = NSNumber(value: (double ))
+
+        // if first number is 0 or all numbers were deleted
+        guard number != 0 as NSNumber else {
+            return ""
+        }
+        return formatter.string(from: number)!
+    }
+
+    func currencyToString() -> String {
+
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currencyAccounting
+        formatter.locale = Locale(identifier: "id_ID")
+
+        if let number = formatter.number(from: self) {
+            let amount = number.decimalValue
+            return String(describing: amount)
+        } else {
+            return "0"
+        }
+    }
+
+}
+
+
 extension UIViewController {
+
     func resetParam(){
-        
-        pmax = "100000000"
-        pmin = "100"
+        pmax = 100000000
+        pmin = 100
         wholesale = true
-        official = false
-        gold = false
+        shopTypeList = [shopType(shop: "Gold Merchant", status: true),shopType(shop: "Officiak Store", status: true)]
+//        official = true
+//        gold = true
         start = 0
         row = 10
     }

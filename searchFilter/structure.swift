@@ -8,7 +8,15 @@
 
 import UIKit
 
-let shopTypeList = ["Gold Merchan","Officiak Store"]
+//let shopTypeList = [ shoptype "Gold Merchan",true],["Officiak Store",true]]
+
+struct shopType {
+    var shop : String
+    var status :Bool
+}
+
+
+var shopTypeList = [shopType(shop: "Gold Merchant", status: true),shopType(shop: "Officiak Store", status: true)]
 
 struct shop {
     var id : String

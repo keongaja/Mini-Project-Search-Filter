@@ -1,11 +1,3 @@
-//
-//  RangeSlider.swift
-//  searchFilter
-//
-//  Created by PPTSI-MBP on 13/03/18.
-//  Copyright © 2018 Bobby Chandra Martonio. All rights reserved.
-//
-
 import UIKit
 import QuartzCore
 
@@ -31,7 +23,7 @@ class RangeSliderTrackLayer: CALayer {
         ctx.setFillColor(slider.trackHighlightTintColor.cgColor)
         let lowerValuePosition = CGFloat(slider.positionForValue(slider.lowerValue))
         let upperValuePosition = CGFloat(slider.positionForValue(slider.upperValue))
-        let rect = CGRect(x: lowerValuePosition, y: 0.0, width: upperValuePosition - lowerValuePosition, height: bounds.height-20 )
+        let rect = CGRect(x: lowerValuePosition - slider.thumbWidth , y: 0.0, width: upperValuePosition - lowerValuePosition  , height: bounds.height)
         ctx.fill(rect)
     }
 }
@@ -86,7 +78,6 @@ class RangeSliderThumbLayer: CALayer {
 
 @IBDesignable
 public class RangeSlider: UIControl {
-
     @IBInspectable public var minimumValue: Double = 0.0 {
         willSet(newValue) {
             assert(newValue < maximumValue, "RangeSlider: minimumValue should be lower than maximumValue")
@@ -125,7 +116,7 @@ public class RangeSlider: UIControl {
 
     var gapBetweenThumbs: Double {
         //return 0.5 * Double(thumbWidth) * (maximumValue - minimumValue) / Double(bounds.width)
-        return  Double(thumbWidth + 1) * (maximumValue - minimumValue) / Double(bounds.width)
+        return Double(thumbWidth) * (maximumValue - minimumValue) / Double(bounds.width)
     }
 
     @IBInspectable public var trackTintColor: UIColor = UIColor(white: 0.9, alpha: 1.0) {
@@ -154,7 +145,7 @@ public class RangeSlider: UIControl {
         }
     }
 
-    @IBInspectable public var thumbBorderWidth: CGFloat = 1 {
+    @IBInspectable public var thumbBorderWidth: CGFloat = 0.5 {
         didSet {
             lowerThumbLayer.lineWidth = thumbBorderWidth
             upperThumbLayer.lineWidth = thumbBorderWidth
@@ -228,7 +219,7 @@ public class RangeSlider: UIControl {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
 
-        trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height/3)
+        trackLayer.frame = bounds.insetBy(dx: thumbWidth - 2, dy: bounds.height/2.5)
         trackLayer.setNeedsDisplay()
 
         let lowerThumbCenter = CGFloat(positionForValue(lowerValue))
@@ -293,3 +284,4 @@ public class RangeSlider: UIControl {
         upperThumbLayer.highlighted = false
     }
 }
+

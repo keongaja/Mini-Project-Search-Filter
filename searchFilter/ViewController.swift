@@ -16,7 +16,7 @@ class productsViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setupViews()
+        //setupViews()
     }
     let imageView: UIImageView = {
         let iv = UIImageView()
@@ -47,7 +47,7 @@ class productsViewCell: UICollectionViewCell {
         return label
     }()
 
-    func setupViews() {
+    func setupViews(data : dataProduk) {
         addSubview(imageView)
         imageView.anchorWithConstantsToTop(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 0, rightConstant: 4)
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1).isActive = true
@@ -60,6 +60,17 @@ class productsViewCell: UICollectionViewCell {
 
         self.layer.cornerRadius = 5
         self.clipsToBounds = true;
+
+        Alamofire.request(data.image_uri).responseImage { response in
+            if (response.result.error == nil)
+            {
+                self.imageView.image = response.result.value
+            }
+        }
+
+        produk.text = data.name
+        harga.text = data.price
+        backgroundColor = .white
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -112,16 +123,27 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         self.edgesForExtendedLayout = []
         title = "Search"
         view.backgroundColor = UIColor(hexString: "#E7E8E9")
-
-
         setup()
-    }
 
+        start = 0
+        data_produk.removeAll()
+        collectionView.reloadData()
+        loadData()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        print(needReloadData)
+        if needReloadData {
+            needReloadData = false
+            data_produk.removeAll()
+            collectionView.reloadData()
+            loadData()
+        }
+    }
 
     func loadData() {
         loadStatus = false
         var jumlahGold = 0
-        if gold {
+        if shopTypeList[0].status {
             jumlahGold = 2
         }
         let parameternya : Parameters = [
@@ -129,7 +151,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
             "pmin" : pmin ,
             "pmax" : pmax ,
             "wholesale" : wholesale ,
-            "official" : official ,
+            "official" : shopTypeList[1].status ,
             "fshop" : jumlahGold ,
             "start" : "\(start)" ,
             "rows" : row]
@@ -205,14 +227,15 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     }
 
     @objc func pressed(sender: UIButton!) {
-        start = 0
-        data_produk.removeAll()
-        collectionView.reloadData()
-        loadData()
 
-
+//
+//        start = 0
+//        data_produk.removeAll()
+//        collectionView.reloadData()
+//        loadData()
+//        hapusData()
         let popOverVC = UINavigationController(rootViewController: filterViewController())
-        present(popOverVC, animated: true, completion: nil)
+        show(popOverVC, sender: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
@@ -239,15 +262,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "products", for: indexPath) as! productsViewCell
-        Alamofire.request(data_produk[indexPath.row].image_uri).responseImage { response in
-            if (response.result.error == nil)
-            {
-                cell.imageView.image = response.result.value
-            }
-        }
-        cell.produk.text = data_produk[indexPath.row].name
-        cell.harga.text = data_produk[indexPath.row].price
-        cell.backgroundColor = .white
+        cell.setupViews(data: data_produk[indexPath.row])
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

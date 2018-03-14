@@ -64,7 +64,7 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
         self.extendedLayoutIncludesOpaqueBars = false
         self.edgesForExtendedLayout = []
         view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(hexString: "#E7E8E9")
         title = "Shop Type"
         setup()
     }
@@ -101,15 +101,12 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Shop", for: indexPath) as! shopTypeViewCell
-        cell.selectButton.setTitle(shopTypeList[indexPath.row], for: .normal)
+        cell.selectButton.setTitle(shopTypeList[indexPath.row].shop, for: .normal)
         cell.selectButton.tag = indexPath.row
 
-        print(gold)
-        print(official)
-
-        if indexPath.row == 0 && gold {
+        if indexPath.row == 0 && shopTypeList[0].status {
             cell.selectButton.isSelected = true
-        } else if indexPath.row == 1 && official {
+        } else if indexPath.row == 1 && shopTypeList[1].status {
             cell.selectButton.isSelected = true
         } else {
             cell.selectButton.isSelected = false
@@ -123,12 +120,12 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     @objc @IBAction fileprivate func selectShop(_ radioButton : DLRadioButton) {
-        print ("==============================")
+        radioButton.isSelected = !radioButton.isSelected
         switch radioButton.tag {
         case 0:
-            gold = radioButton.isSelected
+            shopTypeList[0].status = radioButton.isSelected
         case 1:
-            official = radioButton.isSelected
+            shopTypeList[1].status = radioButton.isSelected
         default:
             break
         }

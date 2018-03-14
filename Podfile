@@ -10,6 +10,7 @@ target 'searchFilter' do
     pod 'AlamofireImage'
     pod 'IQKeyboardManagerSwift'
     pod 'DLRadioButton'
+    pod 'TagListView'
 
   # Pods for searchFilter
 
