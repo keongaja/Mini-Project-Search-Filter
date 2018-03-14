@@ -212,6 +212,7 @@ class productsViewCell: UICollectionViewCell {
                 self.badges.image = response.result.value
             }
         }
+        print (data.label)
         lokasi.text = data.shop.city
         produk.text = data.name
         harga.text = data.price

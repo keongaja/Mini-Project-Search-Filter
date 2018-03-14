@@ -400,6 +400,7 @@ class filterViewController: UIViewController , UICollectionViewDelegate, UIColle
 
     @objc func reset(sender: UIButton!) {
         resetParam()
+        collectionView.reloadData()
     }
     func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
         let index = shopTypeList.index(where: { $0.shop == title })! as Int
