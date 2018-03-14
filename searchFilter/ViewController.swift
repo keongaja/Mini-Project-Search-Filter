@@ -277,6 +277,8 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         loadData()
     }
 
+    
+
     @objc func reloadData() {
         data_produk.removeAll()
         collectionView.reloadData()
@@ -322,7 +324,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
                                         city: jsonShop["city"].description)
 
                     let jsonBadges = self.getJSON(data: subJson["badges"].description)
-                    var dataBadges : badges?
+                    var dataBadges = badges(title: "", uri: "")
                     for (_,jbadges):(String, JSON) in jsonBadges {
                         dataBadges = badges(title: jbadges["title"].description,
                                             uri: jbadges["image_url"].description)
@@ -341,7 +343,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
                                                        count_review: subJson["count_review"].description,
                                                        count_talk: subJson["count_talk"].description,
                                                        count_sold: subJson["count_sold"].description,
-                                                       badges: dataBadges!,
+                                                       badges: dataBadges,
                                                        original_price: subJson["original_price"].description,
                                                        discount_expired: subJson["discount_expired"].description,
                                                        discount_percentage: subJson["discount_percentage"].description,
@@ -360,6 +362,12 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
 
 
     func setup(){
+
+        let searchItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.search, target: self, action: #selector(showSearch(sender:)));
+        searchItem.tintColor = UIColor(hexString: "#42B549")
+        self.navigationItem.rightBarButtonItem = searchItem
+
+
         view.addSubview(filter)
         if #available(iOS 11.0, *) {
             filter.anchorToTop(nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
@@ -371,6 +379,11 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
 
         view.addSubview(collectionView)
         _ = collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: filter.topAnchor, right: view.rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 4, rightConstant: 4, widthConstant: 0, heightConstant: 0)
+    }
+
+    @objc func showSearch(sender: UIButton!) {
+        let popOverVC = search()
+        present(popOverVC, animated: true, completion: nil)
     }
 
     @objc func pressed(sender: UIButton!) {

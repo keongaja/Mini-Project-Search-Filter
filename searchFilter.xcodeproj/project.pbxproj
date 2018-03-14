@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B4636FA20595EAE004EF3BD /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4636F920595EAE004EF3BD /* search.swift */; };
 		2B76EDD52056841300A54345 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDD42056841300A54345 /* extension.swift */; };
 		2B76EDDA2056B17800A54345 /* structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDD92056B17800A54345 /* structure.swift */; };
 		2B76EDDC2057762800A54345 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B76EDDB2057762800A54345 /* RangeSlider.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		0308FE8F142D2E79D53D57BD /* Pods-searchFilter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-searchFilter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-searchFilter/Pods-searchFilter.debug.xcconfig"; sourceTree = "<group>"; };
+		2B4636F920595EAE004EF3BD /* search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
 		2B76EDD42056841300A54345 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2B76EDD92056B17800A54345 /* structure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structure.swift; sourceTree = "<group>"; };
 		2B76EDDB2057762800A54345 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				2BB010682056651C0065755C /* ViewController.swift */,
 				2B76EDDD20577CE700A54345 /* filterViewController.swift */,
 				2B76EDDF2057989000A54345 /* shopTypeViewController.swift */,
+				2B4636F920595EAE004EF3BD /* search.swift */,
 				2BB0106A2056651C0065755C /* Main.storyboard */,
 				2BB010702056651C0065755C /* Assets.xcassets */,
 				2BB010722056651C0065755C /* LaunchScreen.storyboard */,
@@ -249,6 +252,7 @@
 				2B76EDE02057989000A54345 /* shopTypeViewController.swift in Sources */,
 				2B76EDDE20577CE700A54345 /* filterViewController.swift in Sources */,
 				2BB010672056651C0065755C /* AppDelegate.swift in Sources */,
+				2B4636FA20595EAE004EF3BD /* search.swift in Sources */,
 				2B76EDD52056841300A54345 /* extension.swift in Sources */,
 				2B76EDDA2056B17800A54345 /* structure.swift in Sources */,
 			);
