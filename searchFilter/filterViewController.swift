@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 import TagListView
+import FontAwesome_swift
 
 class filterPriceViewCell: UICollectionViewCell {
 
@@ -171,9 +172,12 @@ class filterShopTypeViewCell: UICollectionViewCell {
     var filter: UIButton = {
         let b = UIButton()
         b.translatesAutoresizingMaskIntoConstraints = false
-        b.setTitle("Apply", for: .normal)
-        b.backgroundColor = UIColor(hexString: "#42B549")
+        b.setTitle("Shop Type", for: .normal)
+        b.backgroundColor = .white
+        b.setTitleColor(.black, for: .normal)
+        b.setTitleColor(.gray, for: .highlighted)
         b.addTarget(self, action: #selector(filterViewController.shopFilter(sender:)), for: .touchUpInside)
+        b.contentHorizontalAlignment = .left
         return b
     }()
 
@@ -182,7 +186,7 @@ class filterShopTypeViewCell: UICollectionViewCell {
         sv.axis  = .vertical
         sv.distribution  = .fillEqually
         sv.alignment = .fill
-        sv.spacing   = 4
+        sv.spacing   = 10
         return sv
     }()
 
@@ -193,8 +197,8 @@ class filterShopTypeViewCell: UICollectionViewCell {
         t.cornerRadius = 20
         t.paddingX = 10
         t.paddingY = 10
-        t.borderWidth = 2
-        t.textFont = UIFont.systemFont(ofSize: 17)
+        t.borderWidth = 1
+        t.textFont = UIFont.systemFont(ofSize: 15)
         t.textColor = UIColor(white: 0.0, alpha: 0.5)
         t.borderColor = UIColor(white: 0.0, alpha: 0.5)
         t.removeIconLineColor = .black
@@ -202,10 +206,12 @@ class filterShopTypeViewCell: UICollectionViewCell {
     }()
     func setupViews() {
         backgroundColor = .white
+
+
         stackview.addArrangedSubview(filter)
         stackview.addArrangedSubview(shopTag)
         addSubview(stackview)
-        stackview.anchorToTop(topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor)
+        stackview.anchorWithConstantsToTop(topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 4, rightConstant: 4)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -248,6 +254,7 @@ class filterViewController: UIViewController , UICollectionViewDelegate, UIColle
         view = UIView()
         view.backgroundColor = UIColor(hexString: "#E7E8E9")
         title = "Filter"
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: "filterShop"), object: nil)
         setup()
     }
 
@@ -310,12 +317,20 @@ class filterViewController: UIViewController , UICollectionViewDelegate, UIColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shop", for: indexPath) as! filterShopTypeViewCell
             cell.setupViews()
             cell.shopTag.delegate = self
+
+            let icon = UIImage.fontAwesomeIcon(name: .angleRight, textColor: UIColor(hexString: "#42B549"), size: CGSize(width: 30, height: 30))
+            let iconHighlighted = UIImage.fontAwesomeIcon(name: .angleRight, textColor: .green, size: CGSize(width: 30, height: 30))
+
+            cell.filter.setImage(icon, for: .normal)
+            cell.filter.setImage(iconHighlighted, for: .highlighted)
+            cell.filter.imageEdgeInsets = UIEdgeInsets(top: 0, left: cell.frame.width-40, bottom: 0, right: 0)
+            cell.filter.titleEdgeInsets = UIEdgeInsets(top: 0, left: -30, bottom: 0, right: 0)
+            cell.shopTag.removeAllTags()
             for shop in shopTypeList {
                 if shop.status {
                     cell.shopTag.addTag(shop.shop)
                 }
             }
-            //cell.shopTag.
             return cell
         }
 
@@ -363,6 +378,10 @@ class filterViewController: UIViewController , UICollectionViewDelegate, UIColle
         wholesale = sender.isOn
     }
 
+    @objc func reloadData() {
+        collectionView.reloadData()
+    }
+
     @objc func shopFilter(sender: UIButton!) {
         print ("penasdasdasdcet")
         let controller = shopTypeViewController()
@@ -370,22 +389,22 @@ class filterViewController: UIViewController , UICollectionViewDelegate, UIColle
     }
 
     @objc func apply(sender: UIButton!) {
-        print ("pencet")
-        needReloadData = true
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "filter"), object: nil)
         start = 0
         dismiss(animated: true, completion: nil)
     }
 
     @objc func close(sender: UIButton!) {
-        print ("close")
         dismiss(animated: true, completion: nil)
     }
 
     @objc func reset(sender: UIButton!) {
-        print ("reset")
         resetParam()
     }
-
-
+    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
+        let index = shopTypeList.index(where: { $0.shop == title })! as Int
+        shopTypeList[index].status = false
+        sender.removeTagView(tagView)
+    }
 
 }

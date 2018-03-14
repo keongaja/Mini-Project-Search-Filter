@@ -58,6 +58,16 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
         //cv.isPagingEnabled = true
         return cv
     }()
+
+
+    var filter: UIButton = {
+        let b = UIButton()
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.setTitle("Apply", for: .normal)
+        b.backgroundColor = UIColor(hexString: "#42B549")
+        b.addTarget(self, action: #selector(apply(sender:)), for: .touchUpInside)
+        return b
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,9 +80,6 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func setup(){
-        view.addSubview(collectionView)
-        _ = collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 4, rightConstant: 4, widthConstant: 0, heightConstant: 0)
-
         let doneItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.stop, target: self, action: #selector(close(sender:)));
         doneItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = doneItem
@@ -80,6 +87,20 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
         let reset = UIBarButtonItem(title: "Reset", style: UIBarButtonItemStyle.plain, target: self, action: #selector(reset(sender:)))
         reset.tintColor = UIColor(hexString: "#42B549")
         self.navigationItem.rightBarButtonItem = reset
+
+        view.addSubview(filter)
+        if #available(iOS 11.0, *) {
+            filter.anchorToTop(nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
+
+        } else {
+            // Fallback on earlier versions
+            filter.anchorToTop(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        }
+        filter.heightAnchor.constraint(equalToConstant: 50).isActive = true
+
+
+        view.addSubview(collectionView)
+        _ = collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: filter.topAnchor, right: view.rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 4, rightConstant: 4, widthConstant: 0, heightConstant: 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
@@ -103,14 +124,9 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Shop", for: indexPath) as! shopTypeViewCell
         cell.selectButton.setTitle(shopTypeList[indexPath.row].shop, for: .normal)
         cell.selectButton.tag = indexPath.row
+        print (cell.selectButton.isSelected)
+        cell.selectButton.isSelected = shopTypeList[indexPath.row].status
 
-        if indexPath.row == 0 && shopTypeList[0].status {
-            cell.selectButton.isSelected = true
-        } else if indexPath.row == 1 && shopTypeList[1].status {
-            cell.selectButton.isSelected = true
-        } else {
-            cell.selectButton.isSelected = false
-        }
 
         cell.backgroundColor = .white
         return cell
@@ -120,25 +136,24 @@ class shopTypeViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     @objc @IBAction fileprivate func selectShop(_ radioButton : DLRadioButton) {
-        radioButton.isSelected = !radioButton.isSelected
-        switch radioButton.tag {
-        case 0:
-            shopTypeList[0].status = radioButton.isSelected
-        case 1:
-            shopTypeList[1].status = radioButton.isSelected
-        default:
-            break
-        }
+        shopTypeList[radioButton.tag].status = !shopTypeList[radioButton.tag].status
+        radioButton.isSelected = shopTypeList[radioButton.tag].status
+
+    }
+
+    @objc func apply(sender: UIButton!) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "filterShop"), object: nil)
+        self.navigationController?.popViewController(animated: true)
     }
 
     @objc func close(sender: UIButton!) {
-        print ("close")
         self.navigationController?.popViewController(animated: true)
     }
 
     @objc func reset(sender: UIButton!) {
-        print ("reset")
-        resetParam()
+        for i in 0..<shopTypeList.count {
+            shopTypeList[i].status = true
+        }
         collectionView.reloadData()
     }
 }

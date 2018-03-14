@@ -22,7 +22,19 @@ var wholesale = true
 var start = 0
 var row = 10
 
-var needReloadData = false
+
+extension Array where Element : Collection,
+    Element.Iterator.Element : Equatable, Element.Index == Int {
+
+    func indices(of x: Element.Iterator.Element) -> (Int, Int)? {
+        for (i, row) in self.enumerated() {
+            if let j = row.index(of: x) {
+                return (i, j)
+            }
+        }
+        return nil
+    }
+}
 
 extension String {
 

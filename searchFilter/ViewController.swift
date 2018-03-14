@@ -47,16 +47,155 @@ class productsViewCell: UICollectionViewCell {
         return label
     }()
 
+    var lokasi: UILabel = {
+        let label = UILabel()
+        label.text = "lokasi"
+        label.font = label.font.withSize(14)
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    var toko: UILabel = {
+        let label = UILabel()
+        label.text = "lokasi"
+        label.font = label.font.withSize(14)
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    var icon: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .mapMarker)
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    var icon1: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .star)
+        label.textColor = UIColor(white: 0.0, alpha: 0.5)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    var icon2: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .star)
+        label.textColor = UIColor(white: 0.0, alpha: 0.5)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    var icon3: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .star)
+        label.textColor = UIColor(white: 0.0, alpha: 0.5)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    var icon4: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .star)
+        label.textColor = UIColor(white: 0.0, alpha: 0.5)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    var icon5: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.fontAwesome(ofSize: 14)
+        label.text = String.fontAwesomeIcon(name: .star)
+        label.textColor = UIColor(white: 0.0, alpha: 0.2)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    var jumlah: UILabel = {
+        let label = UILabel()
+        label.text = "(0)"
+        label.font = label.font.withSize(14)
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    let stackview: UIStackView = {
+        let sv = UIStackView()
+        sv.axis  = .horizontal
+        sv.distribution  = .fillEqually
+        sv.alignment = .fill
+        sv.spacing   = 0
+        return sv
+    }()
+
+    let badges: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.backgroundColor = .clear
+        iv.layer.cornerRadius = 5
+        iv.clipsToBounds = true
+        return iv
+    }()
     func setupViews(data : dataProduk) {
+
+        var arrayIcon = [icon1,icon2,icon3,icon4,icon5]
+
+        let bintang = Int(data.rating)! / 20
+        let sisa = Int(data.rating)! % 20
+        let showBintang = bintang + (sisa / 10)
+
+        if bintang > 0 {
+            for i in 1...showBintang{
+                arrayIcon[i - 1].textColor = UIColor(hexString: "#ffd700")
+            }
+            jumlah.text = "(\(data.count_review))"
+            stackview.addArrangedSubview(icon1)
+            stackview.addArrangedSubview(icon2)
+            stackview.addArrangedSubview(icon3)
+            stackview.addArrangedSubview(icon4)
+            stackview.addArrangedSubview(icon5)
+            stackview.addArrangedSubview(jumlah)
+        }
+
         addSubview(imageView)
         imageView.anchorWithConstantsToTop(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 0, rightConstant: 4)
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1).isActive = true
 
+        addSubview(icon)
+        _ = icon.anchor(nil, left: leftAnchor, bottom: bottomAnchor, right: nil, topConstant: 4, leftConstant: 4, bottomConstant: 4, rightConstant: 0,widthConstant: 15, heightConstant: 15)
+
+        addSubview(badges)
+        _ = badges.anchor(nil, left: nil , bottom: bottomAnchor, right: rightAnchor, topConstant: 4, leftConstant: 0, bottomConstant: 4, rightConstant: 4,widthConstant: 15, heightConstant: 15)
+
+        addSubview(lokasi)
+        _ = lokasi.anchor(nil, left: icon.rightAnchor, bottom: bottomAnchor, right: badges.leftAnchor, topConstant: 4, leftConstant: 0, bottomConstant: 4, rightConstant: 0,widthConstant: 0, heightConstant: 15)
+
+        addSubview(toko)
+        _ = toko.anchor(nil, left: leftAnchor, bottom: icon.topAnchor, right: rightAnchor, topConstant: 0, leftConstant: 4, bottomConstant: 4, rightConstant: 4, widthConstant: 0 , heightConstant: 0)
+
+        addSubview(stackview)
+        _ = stackview.anchor(nil, left: leftAnchor, bottom: toko.topAnchor, right: nil, topConstant: 0, leftConstant: 4, bottomConstant: 4, rightConstant: 4, widthConstant: 0 , heightConstant: 15)
+
         addSubview(harga)
-        harga.anchorWithConstantsToTop(nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 8, rightConstant: 4)
+        harga.anchorWithConstantsToTop(nil, left: leftAnchor, bottom: stackview.topAnchor, right: rightAnchor, topConstant: 0, leftConstant: 4, bottomConstant: 4, rightConstant: 4)
+
 
         addSubview(produk)
-        produk.anchorWithConstantsToTop(imageView.bottomAnchor, left: leftAnchor, bottom: harga.topAnchor, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 0, rightConstant: 4)
+        produk.anchorWithConstantsToTop(imageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 4, leftConstant: 4, bottomConstant: 0, rightConstant: 4)
 
         self.layer.cornerRadius = 5
         self.clipsToBounds = true;
@@ -67,9 +206,16 @@ class productsViewCell: UICollectionViewCell {
                 self.imageView.image = response.result.value
             }
         }
-
+        Alamofire.request(data.badges.uri).responseImage { response in
+            if (response.result.error == nil)
+            {
+                self.badges.image = response.result.value
+            }
+        }
+        lokasi.text = data.shop.city
         produk.text = data.name
         harga.text = data.price
+        toko.text = data.shop.name
         backgroundColor = .white
     }
 
@@ -124,22 +270,18 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         title = "Search"
         view.backgroundColor = UIColor(hexString: "#E7E8E9")
         setup()
-
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: NSNotification.Name(rawValue: "filter"), object: nil)
         start = 0
         data_produk.removeAll()
         collectionView.reloadData()
         loadData()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        print(needReloadData)
-        if needReloadData {
-            needReloadData = false
-            data_produk.removeAll()
-            collectionView.reloadData()
-            loadData()
-        }
-    }
 
+    @objc func reloadData() {
+        data_produk.removeAll()
+        collectionView.reloadData()
+        loadData()
+    }
     func loadData() {
         loadStatus = false
         var jumlahGold = 0
@@ -180,9 +322,11 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
                                         city: jsonShop["city"].description)
 
                     let jsonBadges = self.getJSON(data: subJson["badges"].description)
-                    let dataBadges = badges(title: jsonBadges["title"].description,
-                                            uri: jsonBadges["uri"].description)
-
+                    var dataBadges : badges?
+                    for (_,jbadges):(String, JSON) in jsonBadges {
+                        dataBadges = badges(title: jbadges["title"].description,
+                                            uri: jbadges["image_url"].description)
+                    }
                     self.data_produk.append(dataProduk(name: subJson["name"].description,
                                                        uri: subJson["uri"].description,
                                                        image_uri: subJson["image_uri"].description,
@@ -192,10 +336,12 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
                                                        condition: subJson["condition"].description,
                                                        preorder: subJson["preorder"].description,
                                                        department_id: subJson["department_id"].description,
+                                                       rating: subJson["rating"].description,
+                                                       label: subJson["label"].description,
                                                        count_review: subJson["count_review"].description,
                                                        count_talk: subJson["count_talk"].description,
                                                        count_sold: subJson["count_sold"].description,
-                                                       badges: dataBadges,
+                                                       badges: dataBadges!,
                                                        original_price: subJson["original_price"].description,
                                                        discount_expired: subJson["discount_expired"].description,
                                                        discount_percentage: subJson["discount_percentage"].description,
@@ -212,6 +358,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         }
     }
 
+
     func setup(){
         view.addSubview(filter)
         if #available(iOS 11.0, *) {
@@ -227,13 +374,6 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
     }
 
     @objc func pressed(sender: UIButton!) {
-
-//
-//        start = 0
-//        data_produk.removeAll()
-//        collectionView.reloadData()
-//        loadData()
-//        hapusData()
         let popOverVC = UINavigationController(rootViewController: filterViewController())
         show(popOverVC, sender: nil)
     }
@@ -245,7 +385,7 @@ class ViewController: UIViewController , UICollectionViewDelegate, UICollectionV
         if screenSize.width > 500 {
             tabel = CGSize(width: (screenSize.width-16)/4, height: 1.75 * (screenSize.width-16)/4)
         } else {
-            tabel = CGSize(width: (screenSize.width-10)/2, height: 1.75 * (screenSize.width-10)/2)
+            tabel = CGSize(width: (screenSize.width-10)/2, height: 1.8 * (screenSize.width-10)/2)
         }
         return tabel
     }

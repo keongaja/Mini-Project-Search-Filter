@@ -45,6 +45,8 @@ struct dataProduk {
     var condition : String
     var preorder : String
     var department_id : String
+    var rating : String
+    var label : String
     var count_review : String
     var count_talk : String
     var count_sold : String

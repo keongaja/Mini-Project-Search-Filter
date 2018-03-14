@@ -8,6 +8,7 @@ target 'searchFilter' do
     pod 'SwiftyJSON'
     pod 'Alamofire'
     pod 'AlamofireImage'
+    pod 'FontAwesome.swift'
     pod 'IQKeyboardManagerSwift'
     pod 'DLRadioButton'
     pod 'TagListView'
